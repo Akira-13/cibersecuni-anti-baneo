@@ -1,0 +1,218 @@
+* Por favor no me boten
+- Las contraseñas de cada nivel son para el siguiente (lado derecho de la flecha)
+** Level 0
+1. Loggearte con SSH
+#+begin_src 
+ssh -p 2220  bandit0@bandit.labs.overthewire.org
+#+end_src
+** Level 0 -> 1
+1. En home de Level 0, hay un readme
+#+begin_quote
+Congratulations on your first steps into the bandit game!!
+Please make sure you have read the rules at https://overthewire.org/rules/
+If you are following a course, workshop, walkthrough or other educational activity,
+please inform the instructor about the rules as well and encourage them to
+contribute to the OverTheWire community so we can keep these games free!
+
+The password you are looking for is: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+#+end_quote   
+2. Contraseña para el nivel 1: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+** Level 1 -> 2
+1. Debes leer el archivo ~-~
+2. Para que se tome como nombre literal, se usa
+#+begin_src 
+cat ./-
+#+end_src   
+3. Contraseña para el nivel 2: 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+** Level 2 -> 3
+1. Debes leer el archivo ~-- spaces in this filename--~
+#+begin_src 
+cat ./"--spaces in this filename--"
+#+end_src   
+*** Contraseña
+MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+** Level 3 -> 4
+1. Contraseña guardada en archivo oculto
+#+begin_src 
+cd inhere
+cat ...Hiding-From-You
+#+end_src
+*** Contraseña
+2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+** Level 4 -> 5
+1. Contraseña guardada en archivo legible
+#+begin_src 
+cd inhere
+cat ./-file07
+#+end_src
+*** Contraseña
+4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+** Level 5 -> 6
+1. Contraseña guardada en archivo de 1033 bytes de tamaño
+#+begin_src 
+du -a -b | grep 1033
+#+end_src
+*** Contraseña
+HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+** Level 6 -> 7
+1. Encontrar un archivo que pertenezca a bandit7, en el grupo bandit6 de 33 bytes de tamaño
+#+begin_src 
+find / -user bandit7 -group bandit6 -size 33c -exec cat {} +
+#+end_src   
+*** Contraseña
+morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+** Level 7 -> 8
+1. Encontrar contraseña al costado de la palabra "millionth" en el archivo data.txt
+#+begin_src 
+grep millionth data.txt
+#+end_src   
+*** Contraseña
+dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+** Level 8 -> 9
+1. La contraseña es la única lína que ocurre una sola vez en data.txt
+#+begin_src 
+sort data.txt | uniq -c | grep -w "1"
+#+end_src   
+*** Contraseña
+4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+** Level 9 -> 10
+1. La contraseña es una de las cadenas que está precedida por varios "="
+#+begin_src 
+strings data.txt | grep -E "=+" | less
+#+end_src   
+*** Contraseña
+FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+** Level 10 -> 11
+1. La contraseña se encuentra encodificada en base64 en data.txt
+#+begin_src 
+base64 -d data.txt 
+#+end_src   
+*** Contraseña
+dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+** Level 11 -> 12
+1. La contraseña se encuentra encodificada en rot13 en data.txt
+#+begin_src 
+cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+#+end_src   
+*** Contraseña
+7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+** Level 12 -> 13
+1. La contraseña se encuentra comprimida varias veces en data.txt
+2. Solo usa una combinación entre gzip2, bzip2 y tar.
+*** Contraseña
+FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+** Level 13 -> 14
+1. No hay contraseña. El archivo ssh.private se usa como contraseña para el siguiente nivel y la contraseña del siguiente se encuentra en /etc/bandit_pass/bandit14
+  #+begin_src 
+scp -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private ~/Descargas
+chmod 700 sshkey.private
+ssh -i sshkey.private bandit14@localhost -p 2220
+  #+end_src
+** Level 14 -> 15 
+1. La contraseña del siguiente nivel se obtiene subiendo la del nivel actual al puerto 30000 en localhost
+#+begin_src 
+cat /etc/bandit_pass/bandit14 | nc localhost 30000
+#+end_src
+*** Contraseña
+8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+** Level 15 -> 16 
+1. De forma similar, se debe subir la contraseña del nivel 15 usando SSL/TLS al puerto 30001
+#+begin_src 
+openssl s_client -crlf -connect localhost:30001 -servername localhost
+#+end_src
+*** Contraseña
+kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+** Level 16 -> 17 
+1. Buscar un puerto con un servidor escuchando en el rango de puertos 31000-32000
+#+begin_src 
+nmap -p 31000-32000 localhost
+#+end_src
+#+begin_src 
+31046/tcp open  unknown
+31518/tcp open  unknown
+31691/tcp open  unknown
+31790/tcp open  unknown
+31960/tcp open  unknown
+#+end_src
+2. Verificar cuál de estos recibe en SSL/TLS
+#+begin_src 
+echo "kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx" | openssl s_client -connect localhost:31790 -ign_eof
+#+end_src   
+*** Contraseña
+#+begin_src 
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
+imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
+Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu
+DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW
+JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX
+x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD
+KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl
+J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd
+d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC
+YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A
+vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama
++TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT
+8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx
+SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd
+HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt
+SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A
+R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi
+Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg
+R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu
+L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni
+blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU
+YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM
+77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b
+dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3
+vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
+-----END RSA PRIVATE KEY-----
+#+end_src
+- Debe subirse a bandit17
+#+begin_src 
+ssh -i bandit17.key bandit17@bandit.labs.overthewire.org -p 2220
+#+end_src
+** Level 17 -> 18  
+1. Verificar entre dos archivos la línea nueva
+  #+begin_src 
+diff passwords.old passwords.new 
+  #+end_src 
+ #+begin_src 
+< BMIOFKM7CRSLI97voLp3TD80NAq5exxk
+---
+> x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+ #+end_src 
+*** Contraseña
+x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+** Level 18 -> 19
+1. Conectarse al nivel 18 te bota por usar ssh :(
+2. Solo pasar un comando con ssh es necesario
+  #+begin_src 
+ssh bandit18@bandit.labs.overthewire.org -p 2220 cat readme
+  #+end_src 
+*** Contraseña
+cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+** Level 19 -> 20
+1. La contraseña se encuentra en /etc/bandit_pass/bandit20
+2. Solo puede leerse con el binario setuid bandit20-do
+  #+begin_src 
+./bandit20-do cat /etc/bandit_pass/bandit20
+  #+end_src 
+*** Contraseña
+0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+** Level 20 -> 21
+1. Debes abrir un servidor en un puerto con netcat, pasarlo al background y usar suconnect
+  #+begin_src 
+echo -n '0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO' | nc -l -p 1337 &
+  #+end_src 
+2. El comando abrirá un servidor en 1337 que mandará la contraseña al suconnect.
+  #+begin_src 
+/suconnect 1337
+  #+end_src 
+#+begin_src 
+Read: 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+Password matches, sending next password
+EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+#+end_src
+*** Contraseña
+EeoULMCra2q0dSkYj561DX7s1CpBuOBt
